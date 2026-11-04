@@ -1,0 +1,14 @@
+{
+  "appId": "com.law008.hanzi",
+  "appName": "Hanzi",
+  "webDir": "www",
+  "loggingBehavior": "none",
+  "backgroundColor": "#f6f8f3",
+  "ios": {
+    "backgroundColor": "#f6f8f3",
+    "contentInset": "never",
+    "allowsLinkPreview": false,
+    "preferredContentMode": "mobile",
+    "loggingBehavior": "none"
+  }
+}
