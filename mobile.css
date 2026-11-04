@@ -43,4 +43,7 @@ button, input { touch-action: manipulation; }
   .word-example, .word-card-bottom, .vocab-pagination { font-size: 12px; }
   .answer-input { min-height: 50px; font-size: 16px; }
   .flash-tip { font-size: 12px; line-height: 1.5; }
+  .confirm-card p, .celebration-card p { font-size: 14px; }
+  .confirm-card h2, .celebration-card h2 { font-size: 22px; }
+  .modal-actions .button { min-height: 48px; font-size: 14px; }
 }

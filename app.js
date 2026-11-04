@@ -34,7 +34,7 @@
   const state = {
     view: "home", category: "All words", search: "", wordPage: 0, flashIndex: 0, dueOnly: true,
     lesson: null, round: 0, selected: null, checked: false, retryNeeded: false,
-    matchLeft: null, matchDone: [], orderAnswer: [], toastTimer: null,
+    matchLeft: null, matchDone: [], orderAnswer: [], toastTimer: null, pendingView: null,
   };
 
   const todayKey = () => dateKey(new Date());
@@ -42,7 +42,7 @@
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
   }
   function loadProgress() {
-    const empty = { learned: [], bestScore: null, activeDates: [], completedLessons: [], xp: 0, hearts: 5, heartDate: todayKey(), correct: 0, answered: 0, recent: [], srs: {} };
+    const empty = { learned: [], bestScore: null, activeDates: [], completedLessons: [], lastLesson: null, xp: 0, hearts: 5, heartDate: todayKey(), correct: 0, answered: 0, recent: [], srs: {} };
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
       if (saved.heartDate !== todayKey()) {
@@ -55,6 +55,9 @@
         learned: Array.isArray(saved.learned) ? saved.learned.filter((id) => WORDS.some((word) => word.hanzi === id)) : [],
         activeDates: Array.isArray(saved.activeDates) ? saved.activeDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date)).slice(-120) : [],
         completedLessons: Array.isArray(saved.completedLessons) ? saved.completedLessons.filter((id) => /^u\d+l\d+$/.test(id)) : [],
+        lastLesson: saved.lastLesson && Number.isInteger(saved.lastLesson.unit) && saved.lastLesson.unit >= 0 && saved.lastLesson.unit < LESSONS.length
+          && Number.isInteger(saved.lastLesson.lesson) && saved.lastLesson.lesson >= 0 && saved.lastLesson.lesson < LESSONS[saved.lastLesson.unit].length
+          ? { unit: saved.lastLesson.unit, lesson: saved.lastLesson.lesson } : null,
         xp: Number.isFinite(saved.xp) && saved.xp >= 0 ? saved.xp : 0,
         hearts: Number.isInteger(saved.hearts) && saved.hearts >= 0 && saved.hearts <= 5 ? saved.hearts : 5,
         heartDate: typeof saved.heartDate === "string" ? saved.heartDate : todayKey(),
@@ -94,10 +97,15 @@
     return COURSE_WORDS.filter((word) => progress.learned.includes(word.id)).length;
   }
   function nextIncompleteLesson() {
-    for (let unit = 0; unit < LESSONS.length; unit += 1) {
-      for (let lesson = 0; lesson < LESSONS[unit].length; lesson += 1) {
-        if (!progress.completedLessons.includes(getLessonId(unit, lesson))) return { unit, lesson };
-      }
+    const total = LESSONS.reduce((count, lessons) => count + lessons.length, 0);
+    const start = progress.lastLesson
+      ? (progress.lastLesson.unit * LESSONS[0].length + progress.lastLesson.lesson + 1) % total
+      : 0;
+    for (let offset = 0; offset < total; offset += 1) {
+      const position = (start + offset) % total;
+      const unit = Math.floor(position / LESSONS[0].length);
+      const lesson = position % LESSONS[0].length;
+      if (!progress.completedLessons.includes(getLessonId(unit, lesson))) return { unit, lesson };
     }
     return null;
   }
@@ -243,6 +251,20 @@
     if (view === "flashcards") renderFlashcard();
     if (view === "achievements") renderBadges();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function requestView(view) {
+    if (state.view === "lesson" && state.lesson && view !== "lesson") {
+      state.pendingView = view;
+      document.getElementById("leave-lesson-modal").classList.remove("hidden");
+      document.getElementById("keep-lesson").focus();
+      return;
+    }
+    setView(view);
+  }
+  function closeLeaveLessonDialog() {
+    state.pendingView = null;
+    document.getElementById("leave-lesson-modal").classList.add("hidden");
+    document.getElementById("lesson-close").focus();
   }
   function getLessonWords() {
     if (state.lesson.practice) return state.lesson.words;
@@ -569,6 +591,7 @@
       return;
     }
     const lessonId = getLessonId(unit, lesson);
+    progress.lastLesson = { unit, lesson };
     const wasComplete = progress.completedLessons.includes(lessonId);
     if (!wasComplete) {
       progress.completedLessons.push(lessonId);
@@ -691,8 +714,19 @@
     saveProgress();
   }
 
-  document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.view)));
-  document.getElementById("lesson-close").addEventListener("click", () => { state.lesson = null; setView("path"); });
+  document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => requestView(button.dataset.view)));
+  document.getElementById("lesson-close").addEventListener("click", () => requestView("path"));
+  document.getElementById("keep-lesson").addEventListener("click", closeLeaveLessonDialog);
+  document.getElementById("confirm-leave-lesson").addEventListener("click", () => {
+    const destination = state.pendingView || "path";
+    state.lesson = null;
+    state.pendingView = null;
+    document.getElementById("leave-lesson-modal").classList.add("hidden");
+    setView(destination);
+  });
+  document.getElementById("leave-lesson-modal").addEventListener("click", (event) => {
+    if (event.target.id === "leave-lesson-modal") closeLeaveLessonDialog();
+  });
   document.getElementById("lesson-check").addEventListener("click", handleCheckButton);
   document.getElementById("celebration-continue").addEventListener("click", () => {
     document.getElementById("celebration").classList.add("hidden");
@@ -754,6 +788,9 @@
     showToast("Progress reset. Your Mandarin trail is ready!");
   });
   document.getElementById("confirm-modal").addEventListener("click", (event) => { if (event.target.id === "confirm-modal") event.currentTarget.classList.add("hidden"); });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !document.getElementById("leave-lesson-modal").classList.contains("hidden")) closeLeaveLessonDialog();
+  });
   document.getElementById("celebration").addEventListener("click", (event) => { if (event.target.id === "celebration") document.getElementById("celebration-continue").click(); });
 
   renderFilters();
