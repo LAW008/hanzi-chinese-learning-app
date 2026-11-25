@@ -1,0 +1,49 @@
+@media (max-width: 700px) {
+  .main-area { margin-left: 0; }
+  .nav-link { min-height: 44px; }
+  .button { min-height: 44px; }
+  .filter-button { min-height: 44px; }
+  .word-speak { width: 44px; height: 44px; }
+  .icon-button { flex-basis: 44px; width: 44px; height: 44px; }
+  .lesson-hearts { min-height: 38px; }
+  .vocab-pagination .button { min-width: 44px; min-height: 44px; }
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { min-height: 100vh; min-height: 100dvh; -webkit-tap-highlight-color: transparent; }
+.app-shell { min-height: 100dvh; }
+button, input { touch-action: manipulation; }
+
+@media (max-width: 700px) {
+  .sidebar { padding-top: max(9px, env(safe-area-inset-top)); }
+  .page-content { padding-bottom: calc(40px + env(safe-area-inset-bottom)); }
+
+  .nav-link { font-size: 11px; }
+  .breadcrumb { font-size: 12px; }
+  .top-stat small, .streak-pill small { font-size: 10px; }
+  .subtitle { font-size: 15px; line-height: 1.5; }
+  .eyebrow { font-size: 11px; }
+  .hero-copy p, .metric-line > span { font-size: 13px; }
+  .card-title, .text-link, .section-heading p { font-size: 13px; }
+  .mini-note, .metric-foot, .path-overview-copy span, .path-overview-progress small { font-size: 12px; }
+  .preview-unit strong { font-size: 13px; }
+  .preview-unit small { font-size: 12px; }
+  .unit-header-copy span, .unit-progress small { font-size: 11px; }
+  .lesson-node strong { font-size: 13px; }
+  .lesson-node small { font-size: 12px; }
+  .lesson-heading p, .exercise-hint, .typing-hint, .lesson-feedback { font-size: 14px; }
+  .exercise-prompt { font-size: 12px; }
+  .choice-option { min-height: 50px; font-size: 15px; }
+  .choice-letter { font-size: 12px; }
+  .order-chip, .match-option { min-height: 46px; font-size: 14px; }
+  .search-box input { font-size: 16px; }
+  .filter-button { font-size: 13px; }
+  .word-pinyin { font-size: 14px; }
+  .word-english { font-size: 15px; }
+  .word-example, .word-card-bottom, .vocab-pagination { font-size: 12px; }
+  .answer-input { min-height: 50px; font-size: 16px; }
+  .flash-tip { font-size: 12px; line-height: 1.5; }
+  .confirm-card p, .celebration-card p { font-size: 14px; }
+  .confirm-card h2, .celebration-card h2 { font-size: 22px; }
+  .modal-actions .button { min-height: 48px; font-size: 14px; }
+}

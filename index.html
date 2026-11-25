@@ -1,113 +1,118 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chinese Learning App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f6f8f3" />
+    <meta name="description" content="A cheerful, beginner-friendly way to learn Mandarin Chinese." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Hanzi" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <title>Hanzi — Learn Chinese, one little win at a time</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="mobile.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">中文学习 · 今日进度 <span id="progressPercent">0%</span></p>
-          <h1>你好！</h1>
-        </div>
-        <button class="sound-toggle" id="soundToggle" type="button" aria-label="关闭声音">
-          <span id="soundIcon" aria-hidden="true">🔊</span>
-        </button>
-      </header>
-
-      <nav class="tabs" aria-label="学习模式">
-        <button class="tab active" type="button" data-view="learn">学习</button>
-        <button class="tab" type="button" data-view="review">复习</button>
-        <button class="tab" type="button" data-view="quiz">测验</button>
-      </nav>
-
-      <section class="view active" id="learnView" aria-labelledby="lessonTitle">
-      <section class="lesson-card">
-        <div class="lesson-heading">
-          <div>
-            <p class="eyebrow">基础对话</p>
-            <h2 id="lessonTitle">打招呼</h2>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#home" data-view="home" aria-label="Hanzi home"><span class="brand-mark">汉</span><span class="brand-name">hanzi<span>.</span></span></a>
+        <div class="side-label">YOUR LEARNING SPACE</div>
+        <nav class="side-nav" aria-label="Main navigation">
+          <button class="nav-link active" data-view="home"><span class="nav-icon">⌂</span>Home</button>
+          <button class="nav-link" data-view="path"><span class="nav-icon">⌁</span>Learning path</button>
+          <button class="nav-link" data-view="words"><span class="nav-icon">文</span>Word library</button>
+          <button class="nav-link" data-view="flashcards"><span class="nav-icon">▤</span>Flashcards</button>
+          <button class="nav-link" data-view="achievements"><span class="nav-icon">✧</span>Achievements</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="mascot-card">
+            <div class="mascot" aria-hidden="true"><span>团</span><i></i></div>
+            <strong>Meet Bao!</strong>
+            <p>Your tiny study buddy is cheering you on.</p>
           </div>
-          <button class="speaker-button" id="lessonSpeaker" type="button" aria-label="朗读本课">
-            <span aria-hidden="true">🔊</span>
-            <span>朗读</span>
-          </button>
+          <div class="sidebar-profile"><div class="avatar">A</div><div><strong>Alex Morgan</strong><span>Mandarin beginner</span></div><button class="reset-link" id="reset-progress" title="Reset all saved progress" aria-label="Reset all progress">↻</button></div>
         </div>
+      </aside>
 
-        <div class="phrase-list">
-          <article class="phrase">
-            <button class="phrase-speaker" type="button" data-speech="你好！" aria-label="朗读你好">
-              🔊
-            </button>
-            <div>
-              <p class="chinese">你好！</p>
-              <p class="pinyin">Nǐ hǎo!</p>
-              <p class="translation">Hello!</p>
-            </div>
-          </article>
-
-          <article class="phrase">
-            <button class="phrase-speaker" type="button" data-speech="你叫什么名字？" aria-label="朗读你叫什么名字">
-              🔊
-            </button>
-            <div>
-              <p class="chinese">你叫什么名字？</p>
-              <p class="pinyin">Nǐ jiào shénme míngzi?</p>
-              <p class="translation">What's your name?</p>
-            </div>
-          </article>
-
-          <article class="phrase">
-            <button class="phrase-speaker" type="button" data-speech="很高兴认识你。" aria-label="朗读很高兴认识你">
-              🔊
-            </button>
-            <div>
-              <p class="chinese">很高兴认识你。</p>
-              <p class="pinyin">Hěn gāoxìng rènshi nǐ.</p>
-              <p class="translation">Nice to meet you.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="controls" aria-label="语音设置">
-        <label for="speed">语速 <span id="speedValue">正常</span></label>
-        <input id="speed" type="range" min="0.6" max="1.2" step="0.1" value="0.9" />
-      </section>
-      </section>
-
-      <section class="view" id="reviewView" aria-label="复习卡片">
-        <article class="flashcard" id="flashcard">
-          <div class="flashcard-side">
-            <p class="eyebrow" id="cardCount">单词 1 / 3</p>
-            <p class="flashcard-chinese" id="cardChinese">你好！</p>
-            <p class="flashcard-pinyin" id="cardPinyin">Nǐ hǎo!</p>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="breadcrumb"><span>My learning</span><span>/</span><strong id="current-section">Home</strong></div>
+          <div class="topbar-right">
+            <div class="top-stat xp-stat" title="Experience points"><span>✦</span><strong id="top-xp">0</strong><small>XP</small></div>
+            <div class="top-stat heart-stat" title="Hearts remaining"><span>♥</span><strong id="top-hearts">5</strong></div>
+            <button class="streak-pill" data-view="home" aria-label="View daily streak"><span>♨</span><strong id="top-streak">0</strong><small>day streak</small></button>
           </div>
-          <button class="flip-button" id="flipCard" type="button">查看翻译</button>
-        </article>
-        <div class="review-actions">
-          <button type="button" id="rememberButton" class="secondary-button">需要复习</button>
-          <button type="button" id="knownButton" class="primary-button">已经认识</button>
+        </header>
+
+        <div class="page-content">
+          <section class="view active" id="view-home">
+            <div class="welcome-row">
+              <div><div class="eyebrow"><span></span><b id="today-date"></b></div><h1>你好, Alex! <span class="sunny">☀</span></h1><p class="subtitle">Ready to grow your Chinese, one little win at a time?</p></div>
+              <div class="welcome-mascot" aria-hidden="true"><div class="mascot mascot-large"><span>团</span><i></i></div><span class="mascot-speech">加油!<small>jiā yóu · you got this!</small></span></div>
+            </div>
+            <div class="hero-card">
+              <div class="hero-copy"><span class="hero-label">YOUR NEXT LITTLE WIN</span><h2 id="continue-title">Your first lesson<br />is waiting!</h2><p id="continue-description">Say hello, meet Bao, and start your Mandarin adventure.</p><button class="button button-dark" id="continue-button">Start learning <span>→</span></button></div>
+              <div class="hero-scene" aria-hidden="true"><div class="hero-cloud cloud-one"></div><div class="hero-cloud cloud-two"></div><div class="hero-sun"></div><div class="hero-hanzi">学</div><div class="hero-ground"></div><div class="scene-flower flower-one">✿</div><div class="scene-flower flower-two">✿</div></div>
+            </div>
+            <div class="dashboard-grid">
+              <article class="dashboard-card xp-card"><div class="card-title"><span>Experience points</span><span class="tile-icon xp-icon">✦</span></div><div class="metric-line"><strong id="dash-xp">0</strong><span>XP earned</span></div><div class="mini-note" id="xp-next-note">Complete a lesson to earn your first XP.</div><div class="metric-foot"><span>Lifetime learning points</span><b>Keep it up!</b></div></article>
+              <article class="dashboard-card words-card"><div class="card-title"><span>Guided words</span><span class="tile-icon words-icon">文</span></div><div class="metric-line"><strong id="dash-words">0</strong><span id="dash-word-total"></span></div><div class="mini-progress"><span id="words-bar"></span></div><div class="metric-foot"><span id="words-percent">Ready when you are</span><b id="words-percent-value">0%</b></div></article>
+              <article class="dashboard-card accuracy-card"><div class="card-title"><span>Quiz accuracy</span><span class="tile-icon accuracy-icon">◎</span></div><div class="metric-line"><strong id="dash-accuracy">—</strong><span id="accuracy-sub">No exercises yet</span></div><div class="accuracy-dots" id="accuracy-dots" aria-label="Recent exercise accuracy"></div><div class="metric-foot"><span>Correct answers so far</span><b id="correct-total">0 / 0</b></div></article>
+              <article class="dashboard-card streak-card"><div class="card-title"><span>Daily streak</span><span class="tile-icon streak-icon">♨</span></div><div class="metric-line"><strong id="dash-streak">0</strong><span id="streak-label">days</span><span class="streak-flame">♨</span></div><div class="streak-week" id="streak-week"></div><div class="metric-foot"><span>A little practice adds up</span><b>One day at a time</b></div></article>
+            </div>
+            <div class="section-heading"><div><h2>Your Mandarin trail</h2><p>Ten tiny steps. A whole new language.</p></div><button class="text-link" data-view="path">See your path <span>→</span></button></div>
+            <div class="path-preview" id="home-path"></div>
+          </section>
+
+          <section class="view" id="view-path">
+            <div class="view-header"><div><div class="eyebrow"><span></span> YOUR JOURNEY</div><h1>The Mandarin trail</h1><p class="subtitle">Choose any lesson and learn at your own pace.</p></div><div class="path-progress-badge"><strong id="path-progress-count">0 / 50</strong><span>lessons completed</span></div></div>
+            <div class="path-overview"><div class="path-overview-icon">学</div><div class="path-overview-copy"><strong>Beginner trail</strong><span>10 units · 50 bite-size lessons</span></div><div class="path-overview-progress"><div class="mini-progress"><span id="path-overview-bar"></span></div><small id="path-overview-label">0% complete</small></div></div>
+            <div class="units-list" id="units-list"></div>
+          </section>
+
+          <section class="view" id="view-lesson">
+            <div class="lesson-shell">
+              <div class="lesson-top"><button class="icon-button" id="lesson-close" aria-label="Leave lesson">←</button><div class="lesson-progress-track"><span id="lesson-progress-fill"></span></div><div class="lesson-hearts" title="Hearts are optional encouragement; practice stays open when they run out."><span>♥</span><b id="lesson-hearts">5</b></div></div>
+              <div class="lesson-heading"><div class="eyebrow"><span></span><b id="lesson-label">UNIT 1 · LESSON 1</b></div><h1 id="lesson-title">Say hello</h1><p id="lesson-instruction">Choose the correct answer.</p></div>
+              <div id="exercise-area" class="exercise-area"></div>
+              <div class="lesson-bottom"><div class="lesson-feedback" id="lesson-feedback" aria-live="polite">Choose your answer</div><button class="button button-check" id="lesson-check" disabled>Check <span>→</span></button></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-words">
+            <div class="view-header"><div><div class="eyebrow"><span></span> YOUR POCKET DICTIONARY</div><h1>Word library</h1><p class="subtitle"><span id="library-word-total"></span> dictionary entries, including <span id="library-course-total"></span> guided lesson words.</p></div><label class="search-box"><span>⌕</span><input id="word-search" type="search" placeholder="Find a word..." aria-label="Search vocabulary" /></label></div>
+            <div class="filter-row" id="category-filters" aria-label="Filter words"></div><div class="word-grid" id="word-grid"></div>
+            <div class="vocab-pagination"><span id="vocab-results" aria-live="polite"></span><div><button class="button button-light" id="vocab-prev" aria-label="Previous vocabulary page">←</button><span id="vocab-page-label"></span><button class="button button-light" id="vocab-next" aria-label="Next vocabulary page">→</button></div></div>
+            <p class="empty-state hidden" id="empty-words">No words match your search. Try another one.</p>
+          </section>
+
+          <section class="view" id="view-flashcards">
+            <div class="view-header"><div><div class="eyebrow"><span></span> REMEMBER A LITTLE MORE</div><h1>Flashcards</h1><p class="subtitle">A gentle review of words that are ready to practice.</p></div><button class="button button-soft" id="due-toggle">Review all words</button></div>
+            <div class="flashcard-area"><div class="flash-progress-row"><span id="flash-position">CARD 1 OF 100</span><span id="flash-due-count">100 ready to review</span></div>
+              <button class="flashcard" id="flashcard" aria-label="Reveal flashcard answer"><span class="flash-hint" id="flash-hint">TAP TO REVEAL</span><span class="flash-hanzi" id="flash-hanzi">你好</span><span class="flash-pinyin hidden" id="flash-pinyin">nǐ hǎo</span><span class="flash-translation hidden" id="flash-translation">hello</span><span class="flash-example hidden" id="flash-example">你好！ · Hello!</span><span class="flash-tap" id="flash-tap">↻ &nbsp; Tap to see the meaning</span></button>
+              <div class="flash-controls"><button class="button button-light" id="flash-prev">← Previous</button><button class="button button-sound" id="flash-speak" aria-label="Hear pronunciation">♫</button><button class="button button-again" id="flash-again">Again</button><button class="button button-remember" id="flash-remember">Got it ✓</button><button class="button button-light" id="flash-next">Next →</button></div>
+              <p class="flash-tip" id="flash-tip">Review schedule: Again = later today · Got it = tomorrow, then 3 and 7 days.</p>
+            </div>
+          </section>
+
+          <section class="view" id="view-achievements">
+            <div class="view-header"><div><div class="eyebrow"><span></span> LITTLE WINS ADD UP</div><h1>Achievements</h1><p class="subtitle">Every step forward is worth celebrating.</p></div></div>
+            <div class="achievement-summary"><div class="achievement-star">✦</div><div><strong id="badge-count">0 badges earned</strong><span>Keep learning to collect them all!</span></div></div>
+            <div class="badge-grid" id="badge-grid"></div>
+          </section>
         </div>
-      </section>
-
-      <section class="view" id="quizView" aria-label="测验">
-        <article class="quiz-card">
-          <p class="eyebrow" id="quizCount">问题 1 / 3</p>
-          <h2 id="quizQuestion">“你好！”是什么意思？</h2>
-          <div class="quiz-options" id="quizOptions"></div>
-          <p class="quiz-feedback" id="quizFeedback" aria-live="polite"></p>
-        </article>
-      </section>
-
-      <footer class="progress-bar" aria-label="学习进度">
-        <span id="progressFill"></span>
-      </footer>
-    </main>
-
-    <script src="script.js"></script>
+      </main>
+    </div>
+    <div class="modal-backdrop hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="confirm-card"><div class="modal-mascot">团</div><h2 id="confirm-title">Start fresh?</h2><p>This clears your lessons, XP, hearts, and saved study progress from this browser. This can't be undone.</p><div class="modal-actions"><button class="button button-light" id="cancel-reset">Keep learning</button><button class="button button-danger" id="confirm-reset">Reset progress</button></div></div></div>
+    <div class="modal-backdrop hidden" id="leave-lesson-modal" role="dialog" aria-modal="true" aria-labelledby="leave-lesson-title"><div class="confirm-card"><div class="modal-mascot">团</div><h2 id="leave-lesson-title">Leave this lesson?</h2><p>Your current lesson won't be saved, but completed lessons and earned XP are safe.</p><div class="modal-actions"><button class="button button-light" id="keep-lesson">Keep learning</button><button class="button button-danger" id="confirm-leave-lesson">Leave lesson</button></div></div></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="celebration hidden" id="celebration" role="dialog" aria-modal="true" aria-labelledby="celebration-title"><div class="celebration-card"><div class="celebration-confetti" aria-hidden="true">✦　✿　✦</div><div class="celebration-bao">团</div><div class="celebration-label">LESSON COMPLETE</div><h2 id="celebration-title">Look at you go!</h2><p id="celebration-copy">You made another little step forward.</p><div class="celebration-reward">✦ <strong id="celebration-xp">+20 XP</strong></div><button class="button button-dark" id="celebration-continue">Keep going <span>→</span></button></div></div>
+    <script src="vocabulary.js"></script>
+    <script src="vocabulary-extra.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

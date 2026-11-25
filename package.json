@@ -1,0 +1,25 @@
+{
+  "name": "hanzi-learning-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hanzi Mandarin learning app for web and iOS",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/copy-web-assets.cjs",
+    "ios:setup": "npm run build && cap add ios && npm run ios:assets && cap sync ios && node scripts/copy-privacy-manifest.cjs",
+    "ios:assets": "capacitor-assets generate --ios",
+    "ios:sync": "npm run build && cap sync ios && node scripts/copy-privacy-manifest.cjs",
+    "ios:open": "cap open ios",
+    "ios:run": "npm run build && cap run ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.6.0",
+    "@capacitor/ios": "8.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "4.0.0",
+    "@capacitor/cli": "8.6.0"
+  }
+}
